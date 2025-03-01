@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StealthCommute</title>
+
+    <link rel="stylesheet" href="./style.css"/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.3/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.3/mapbox-gl-geocoder.css" type="text/css">
+
+    
+    <link rel="stylesheet" href="https://unpkg.com/franken-ui@2.0.0/dist/css/core.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/franken-ui@2.0.0/dist/css/utilities.min.css"/>
+    <script>
+        const htmlElement = document.documentElement;
+        const __FRANKEN__ = JSON.parse(
+            localStorage.getItem("__FRANKEN__") || "{}"
+        );
+
+        if (
+            __FRANKEN__.mode === "dark" ||
+            (!__FRANKEN__.mode &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+            htmlElement.classList.add("dark");
+        } else {
+            htmlElement.classList.remove("dark");
+        }
+
+        htmlElement.classList.add(__FRANKEN__.theme || "uk-theme-zinc");
+        htmlElement.classList.add(__FRANKEN__.radii || "uk-radii-md");
+        htmlElement.classList.add(__FRANKEN__.shadows || "uk-shadows-sm");
+        htmlElement.classList.add(__FRANKEN__.font || "uk-font-sm");
+        htmlElement.classList.add(__FRANKEN__.chart || "uk-chart-default");
+    </script>
+    <script src="https://unpkg.com/franken-ui@2.0.0/dist/js/core.iife.js" type="module"></script>
+    <script src="https://unpkg.com/franken-ui@2.0.0/dist/js/icon.iife.js" type="module"></script>
+
+    <script src="https://unpkg.com/duo-icons@latest"></script>
+</head>
+<body>
+
+    <div id="container">
+        <div id="left-sidebar" class="sidebar" style="border-right: 2px solid #27272a;">
+            <button onclick="toggleSidebar('left-sidebar')" style="margin-bottom: 10px;">
+                <i data-duoicon="dashboard"></i>
+            </button>
+
+            <div class="sidebarContent">
+                <div style="display: flex; align-items: center; margin-bottom: 8px; width:100%">
+                    <input class="uk-input" type="text" placeholder="Start" id="startInp" style="flex: 1; margin-right: 8px;"/>
+                    <button id="startGrab"><i data-duoicon="location"></i></button>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 8px; width:100%">
+                    <input class="uk-input" type="text" placeholder="Destination" id="destInp" style="flex:1; margin-right: 8px;" />
+                    <button id="destGrab"><i data-duoicon="location"></i></button>
+                </div>
+                
+                <ul class="uk-tab-alt" style="margin-bottom: 10px;">
+                    <li id="walkingSel" onclick="document.getElementById(transportMethod+'Sel').classList.remove('uk-active');this.classList.add('uk-active');transportMethod='walking';"><a href="#">Walk</a></li>
+                    <li id="drivingSel" class="uk-active" onclick="document.getElementById(transportMethod+'Sel').classList.remove('uk-active');this.classList.add('uk-active');transportMethod='driving';"><a href="#">Drive</a></li>
+                    <li id="cyclingSel" onclick="document.getElementById(transportMethod+'Sel').classList.remove('uk-active');this.classList.add('uk-active');transportMethod='cycling';"><a href="#">Bike</a></li>
+                    <li id="rideshareSel" onclick="document.getElementById(transportMethod+'Sel').classList.remove('uk-active');this.classList.add('uk-active');transportMethod='rideshare';"><a href="#">Rideshare</a></li>
+                </ul>
+                <button class="uk-btn uk-btn-primary" style="width:100%; font-weight:bold;" id="calculateTravel">Go</button>
+                <div style="margin-top: 10px;text-align: center;border: 2px solid #83838c;padding: 10px; width:100%;border-radius: 12px;font-size:18px;display:none;" id="travelInfo">
+                    <p><span id="arrival"style="font-weight: bold;">12:54</span> arrival</p>
+                    <p><span id="time" style="font-weight: bold;">23</span> min</p>
+                    <p><span id="distance" style="font-weight: bold;">10</span> miles</p>
+                </div>
+                <div style="margin-top: 10px;text-align: center;border: 2px solid #83838c;padding: 10px; width:100%;border-radius: 12px;font-size:18px;display:none;" id="rideInfo">
+                    <p><span id="arrivalFast"style="font-weight: bold;">12:54</span> fastest arrival</p>
+                    <p><span id="timeShare" style="font-weight: bold;">23</span> min</p>
+                    <p><span id="distanceShare" style="font-weight: bold;">10</span> miles</p>
+                    <span class="divider"></span>
+                    <div id="rideInfoDiv" style="width: 100%;font-size: 16px; overflow-y: auto; max-height: 400px; scrollbar-width: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="map"></div>
+
+        <div id="right-sidebar" class="sidebar collapsed" style="border-left: 2px solid #27272a;">
+            <button onclick="toggleSidebar('right-sidebar')">
+                <i data-duoicon="rocket"></i>
+            </button>
+            <div class="sidebarContent collapsed" style="margin-top:8px; opacity: 0.9;">
+                <div id="messages" style="width: 100%;font-size: 16px; overflow-y: auto; height: 74vh; scrollbar-width: none;"></div>
+                <textarea class="uk-textarea"rows="5"placeholder="Type..."aria-label="Textarea" style="scrollbar-width: none;height: 20%;max-height:20%;color:white;" id="chatInput"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+</html>

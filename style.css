@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+    --bg: #09090b;
+    --accent: #27272a;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: sans-serif;
+    background-color: #09090b;
+    font-family: "Inter", sans-serif;
+}
+#container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 300px;
+    background: var(--bg);
+    color: white;
+    border: 2px solid var(--accent);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease-in-out;
+}
+.sidebar.collapsed {
+    width: 50px;
+    overflow: hidden;
+}
+
+.sidebarContent.collapsed {
+    display: none;
+}
+
+#map {
+    flex-grow: 1;
+    height: 100vh;
+}
+
+.sidebar-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.duoicon .duoicon-primary-layer{
+    color: white;
+}
+
+.duoicon .duoicon-secondary-layer{
+    color: black;
+}
+
+.divider {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: #27272a;
+    margin: 5px 0;
+    border-radius: 10px;
+}
+
+.rideInfo {
+    margin-top: 10px;
+    border: 2px solid rgb(36, 36, 36);
+    padding: 10px; width:100%;
+    border-radius: 8px;
+    font-size:18px;
+    display:block;
+}
+
+.rideInfo > .title {
+    text-align: left !important;
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.rideInfo > .price {
+    text-align: right;
+    display: inline-block;
+}
+
+.rideInfo > .time {
+    font-size: 12px;
+    text-align: center;
+}
+
+.message {
+    display: block;
+    padding: 10px;
+    background: #27272a;
+    color: white;
+    border-radius: 8px;
+    margin-top: 10px;
+    width: 80%;
+}
+
+.message.user {
+    margin-left: auto;
+}
+
+.message.system {
+    background: #007bff;
+}
