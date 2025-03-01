@@ -6,7 +6,7 @@ var transportMethod = "driving"
 
 window.onload = () => {
     duoIcons.createIcons();
-    mapboxgl.accessToken = 'pk.eyJ1IjoidnJhY3RvIiwiYSI6ImNtN3FkODkxNTB5YTUya3BzMzFnbmlpcW8ifQ.pYxJXLHgWiEAG2OQ16R3Cg';
+    mapboxgl.accessToken = '...';
     map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/satellite-streets-v12',
